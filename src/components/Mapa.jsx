@@ -4,18 +4,19 @@ import { divIcon } from "leaflet";
 import "leaflet/dist/leaflet.css";
 import { TIPOS_LLUVIA } from "../reportes";
 import BuscadorUbicacion from "./BuscadorUbicacion";
+import { useLang } from "../i18n.jsx";
 
 // Convierte timestamp de Firestore a texto relativo
-function tiempoTranscurrido(timestamp) {
-  if (!timestamp) return "hace un momento";
+function tiempoTranscurrido(timestamp, t) {
+  if (!timestamp) return t.haceUnMomento;
   try {
     const diff = Date.now() - timestamp.toMillis();
     const min = Math.floor(diff / 60000);
-    if (min < 1) return "hace unos segundos";
-    if (min === 1) return "hace 1 minuto";
-    return `hace ${min} minutos`;
+    if (min < 1) return t.haceUnosSegundos;
+    if (min === 1) return t.haceUnMinuto;
+    return t.haceMinutos(min);
   } catch {
-    return "hace un momento";
+    return t.haceUnMomento;
   }
 }
 
@@ -133,6 +134,7 @@ function MapControlesInternos({ mapRef, ubicacion, onLimpiarPin }) {
 
 export default function Mapa({ reportes, ubicacion, pinSeleccionado, onMapClick, flyTarget, onLimpiarPin }) {
   const mapInstance = useRef(null);
+  const { t, lang } = useLang();
   const centro = ubicacion ? [ubicacion.lat, ubicacion.lng] : [19.4326, -99.1332];
 
   return (
@@ -177,8 +179,8 @@ export default function Mapa({ reportes, ubicacion, pinSeleccionado, onMapClick,
               <Popup>
                 <div style={{ textAlign: "center", fontFamily: "Inter, system-ui, sans-serif", padding: "2px 4px" }}>
                   <div style={{ fontSize: 28, lineHeight: 1, marginBottom: 4 }}>{tipo.emoji}</div>
-                  <div style={{ fontWeight: 700, fontSize: 14, color: tipo.color, marginBottom: 2 }}>{tipo.label}</div>
-                  <div style={{ fontSize: 12, color: "#64748b" }}>{tiempoTranscurrido(r.creadoEn)}</div>
+                  <div style={{ fontWeight: 700, fontSize: 14, color: tipo.color, marginBottom: 2 }}>{lang === "en" ? tipo.labelEn : tipo.label}</div>
+                  <div style={{ fontSize: 12, color: "#64748b" }}>{tiempoTranscurrido(r.creadoEn, t)}</div>
                 </div>
               </Popup>
             </Marker>
@@ -203,7 +205,7 @@ export default function Mapa({ reportes, ubicacion, pinSeleccionado, onMapClick,
           boxShadow: "0 0 6px #6366f1",
           display: "inline-block", flexShrink: 0,
         }} />
-        Tú · centro
+        {t.tuCentro}
       </div>
 
       {/* Controles + Buscador — top right */}

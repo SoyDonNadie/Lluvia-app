@@ -5,6 +5,7 @@ import Mapa from "./components/Mapa";
 import BotonesLluvia from "./components/BotonesLluvia";
 import ToastNotificacion from "./components/ToastNotificacion";
 import { distanciaKm, formatDistancia } from "./utils/geo";
+import { useLang } from "./i18n.jsx";
 
 const RADIO_COBERTURA_KM = 10; // solo mostrar reportes en este radio
 const RADIO_NOTIFICACION_KM = 2; // notificar si hay reportes a esta distancia
@@ -23,7 +24,8 @@ export default function App() {
   const [errorUbicacion, setErrorUbicacion] = useState(false);
   const [toast, setToast] = useState(null); // { mensaje, emoji }
   const primeraUbicacion = useRef(true);
-  const prevReportesRef = useRef(null); // null = primer carga, no notificar
+  const prevReportesRef = useRef(null);
+  const { t, lang, toggleLang } = useLang(); // null = primer carga, no notificar
 
   // Login anónimo
   useEffect(() => {
@@ -93,7 +95,8 @@ export default function App() {
       const tipo = TIPOS_LLUVIA.find((t) => t.id === r.tipo);
       if (tipo) {
         const dist = distanciaKm(ubicacion.lat, ubicacion.lng, r.lat, r.lng);
-        const msg = `${tipo.label} reportado a ${formatDistancia(dist)} de ti`;
+        const label = lang === "en" ? tipo.labelEn : tipo.label;
+        const msg = t.notifMsg(label, formatDistancia(dist));
         setToast({ mensaje: msg, emoji: tipo.emoji });
 
         // Notificación del navegador si la pestaña no está activa
@@ -206,6 +209,18 @@ export default function App() {
             LluviaYa
           </span>
         </div>
+        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+        {/* Toggle idioma */}
+        <button onClick={toggleLang} style={{
+          background: "transparent", border: "1px solid #334155",
+          borderRadius: 8, color: "#94a3b8",
+          fontSize: 12, fontWeight: 700,
+          padding: "4px 8px", cursor: "pointer",
+          fontFamily: "inherit", letterSpacing: 0.5,
+        }}>
+          {lang === "es" ? "EN" : "ES"}
+        </button>
+
         <div style={{
           display: "flex", alignItems: "center", gap: 7,
           padding: "5px 10px 5px 8px",
@@ -222,8 +237,9 @@ export default function App() {
             }} />
           </span>
           <span style={{ fontSize: 11.5, color: "#a7f3d0", fontWeight: 600, fontVariantNumeric: "tabular-nums" }}>
-            {activeCount} reportes activos
+            {t.reportesActivos(activeCount)}
           </span>
+        </div>
         </div>
       </header>
 
@@ -234,7 +250,7 @@ export default function App() {
           padding: "10px 16px", fontSize: 13, textAlign: "center",
           zIndex: 1000, flexShrink: 0,
         }}>
-          ⚠️ Activa el GPS para poder reportar lluvia
+          {t.activarGPS}
         </div>
       )}
 

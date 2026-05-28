@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from "react";
+import { useLang } from "../i18n.jsx";
 
 export default function BuscadorUbicacion({ onSelect }) {
   const [abierto, setAbierto] = useState(false);
@@ -6,6 +7,7 @@ export default function BuscadorUbicacion({ onSelect }) {
   const [resultados, setResultados] = useState([]);
   const [cargando, setCargando] = useState(false);
   const inputRef = useRef(null);
+  const { t } = useLang();
   const timerRef = useRef(null);
 
   // Foco automático al abrir
@@ -83,7 +85,7 @@ export default function BuscadorUbicacion({ onSelect }) {
           ref={inputRef}
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          placeholder="Buscar ciudad, colonia..."
+          placeholder={t.buscarPlaceholder}
           style={{
             flex: 1,
             background: "transparent",
@@ -163,7 +165,7 @@ export default function BuscadorUbicacion({ onSelect }) {
           fontSize: 13,
           zIndex: 600,
         }}>
-          Sin resultados para "{query}"
+          {t.sinResultados(query)}
         </div>
       )}
     </div>

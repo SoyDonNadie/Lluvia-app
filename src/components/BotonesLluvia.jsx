@@ -1,10 +1,12 @@
 import { TIPOS_LLUVIA } from "../reportes";
+import { useLang } from "../i18n.jsx";
 
 export default function BotonesLluvia({
   onReportar, cargando, sent, expiresIn, ultimoReporte,
   pinSeleccionado, onLimpiarPin, onCancelar, contadores = {},
 }) {
   const usandoPin = !!pinSeleccionado;
+  const { t, lang } = useLang();
 
   return (
     <div style={{
@@ -33,10 +35,7 @@ export default function BotonesLluvia({
         fontSize: 11.5, color: "#94a3b8",
         textAlign: "center", lineHeight: 1.4, margin: 0,
       }}>
-        {usandoPin
-          ? <>📍 Punto seleccionado en el mapa</>
-          : <>📡 Tu ubicación GPS</>
-        }
+        {usandoPin ? t.puntoSeleccionado : t.tuGPS}
       </p>
 
       {/* Título */}
@@ -48,7 +47,7 @@ export default function BotonesLluvia({
         textAlign: "center",
         textTransform: "uppercase",
       }}>
-        ¿Qué tal el clima?
+        {t.cualElClima}
       </h2>
 
       {/* Grilla 3×2 de botones */}
@@ -61,13 +60,14 @@ export default function BotonesLluvia({
           const isSelected = ultimoReporte === tipo.id && sent;
           const isDisabled = cargando || (sent && !isSelected);
           const count = contadores[tipo.id] || 0;
+          const label = lang === "en" ? tipo.labelEn : tipo.label;
 
           return (
             <button
               key={tipo.id}
               onClick={() => !sent && !cargando && onReportar(tipo.id)}
               disabled={isDisabled}
-              aria-label={`Reportar ${tipo.label}`}
+              aria-label={`Report ${label}`}
               style={{
                 position: "relative",
                 background: isSelected ? tipo.color : `${tipo.color}1f`,
@@ -107,7 +107,7 @@ export default function BotonesLluvia({
                 color: isSelected ? "#0b1220" : "#e2e8f0",
                 textAlign: "center", lineHeight: 1.1,
               }}>
-                {tipo.label}
+                {label}
               </span>
             </button>
           );
@@ -138,7 +138,7 @@ export default function BotonesLluvia({
               fontSize: 12, color: "#86efac", fontWeight: 600,
               fontVariantNumeric: "tabular-nums",
             }}>
-              Reporte enviado — expira en {expiresIn} min
+              {t.reporteEnviado(expiresIn)}
             </span>
             <button
               onClick={onCancelar}
@@ -153,7 +153,7 @@ export default function BotonesLluvia({
           </div>
         ) : (
           <span style={{ fontSize: 11.5, color: "#475569", fontStyle: "italic" }}>
-            Toca una opción para enviar tu reporte
+            {t.tocaOpcion}
           </span>
         )}
       </div>

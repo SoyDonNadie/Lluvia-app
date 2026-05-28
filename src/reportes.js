@@ -11,12 +11,12 @@ import {
 } from "firebase/firestore";
 
 export const TIPOS_LLUVIA = [
-  { id: "nubes_negras", label: "Nubes negras",  emoji: "☁️",  color: "#64748b", glow: "rgba(100,116,139,0.45)", emojiFilter: "brightness(0) invert(0.3)" },
-  { id: "llovizna",     label: "Llovizna",       emoji: "🌦️",  color: "#60a5fa", glow: "rgba(96,165,250,0.45)"  },
-  { id: "llueve",       label: "Llueve",          emoji: "🌧️",  color: "#3b82f6", glow: "rgba(59,130,246,0.5)"   },
-  { id: "llueve_mucho", label: "Llueve mucho",    emoji: "⛈️",  color: "#f97316", glow: "rgba(249,115,22,0.5)"   },
-  { id: "tormenta",     label: "Tormenta",        emoji: "🌩️",  color: "#ef4444", glow: "rgba(239,68,68,0.5)"    },
-  { id: "soleado",      label: "Soleado",         emoji: "☀️",   color: "#facc15", glow: "rgba(250,204,21,0.5)"   },
+  { id: "nubes_negras", label: "Nubes negras",  labelEn: "Dark clouds",  emoji: "☁️",  color: "#64748b", glow: "rgba(100,116,139,0.45)", emojiFilter: "brightness(0) invert(0.3)" },
+  { id: "llovizna",     label: "Llovizna",       labelEn: "Drizzle",      emoji: "🌦️",  color: "#60a5fa", glow: "rgba(96,165,250,0.45)"  },
+  { id: "llueve",       label: "Llueve",          labelEn: "Raining",      emoji: "🌧️",  color: "#3b82f6", glow: "rgba(59,130,246,0.5)"   },
+  { id: "llueve_mucho", label: "Llueve mucho",    labelEn: "Heavy rain",   emoji: "⛈️",  color: "#f97316", glow: "rgba(249,115,22,0.5)"   },
+  { id: "tormenta",     label: "Tormenta",        labelEn: "Storm",        emoji: "🌩️",  color: "#ef4444", glow: "rgba(239,68,68,0.5)"    },
+  { id: "soleado",      label: "Soleado",         labelEn: "Sunny",        emoji: "☀️",   color: "#facc15", glow: "rgba(250,204,21,0.5)"   },
 ];
 
 // Usa el UID como ID del documento → sobreescribe el reporte anterior automáticamente
