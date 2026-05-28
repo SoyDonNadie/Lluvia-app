@@ -203,7 +203,7 @@ export default function App() {
         <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
           <img src="/icon-192.png" alt="LluviaYa" style={{ width: 32, height: 32, objectFit: "contain" }} />
           <span style={{ fontWeight: 800, fontSize: 17, color: "#ffffff", letterSpacing: -0.2 }}>
-            LluviaYa
+            LluviaYa 🌂
           </span>
         </div>
         <div style={{
